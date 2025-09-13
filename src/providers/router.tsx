@@ -5,18 +5,20 @@ import ProtectedRoute from '../auth/ProtectedRoute';
 import Login from '../pages/Auth/Login';
 import NotFound from '../pages/NotFound';
 import App from '../App';
+import FavoritesPage from '../pages/Favorites';
 
 const router = createBrowserRouter([
   {
-    element: <App />,        // top-level layout (header, etc.)
+    element: <App />,
     errorElement: <NotFound />,
     children: [
       { path: "/login", element: <Login /> },
       {
-        element: <ProtectedRoute />, // everything below requires login
+        element: <ProtectedRoute />,
         children: [
           { path: '/', element: <SearchPage /> },
           { path: '/movie/:id', element: <MovieDetails /> },
+          { path: '/favorites', element: <FavoritesPage /> },
         ],
       },
       { path: "*", element: <NotFound /> },

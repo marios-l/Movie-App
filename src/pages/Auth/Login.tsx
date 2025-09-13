@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { Button, Card, Field, Input, Stack, Text } from "@chakra-ui/react";
 
@@ -25,7 +25,7 @@ function getRedirectPath(state: unknown): string | null {
 }
 
 export default function Login() {
-  const { login } = useAuth();
+  const { user, login } = useAuth();
   const [email, setEmail] = useState("admin");
   const [password, setPassword] = useState("adminpass");
   const [err, setErr] = useState<string | null>(null);
@@ -45,6 +45,8 @@ export default function Login() {
       setErr(e instanceof Error ? e.message : "Login failed");
     }
   }
+
+  if (user) return <Navigate to="/" replace />;
 
   return (
     <Card.Root as="form" marginInline="auto" mt={12} maxW="sm" shadow="xl" onSubmit={onSubmit}>

@@ -4,7 +4,7 @@ import AppHeader from "./components/common/AppHeader";
 
 export default function App() {
   return (
-    <Box margin="auto" maxW="1400px">
+    <Box>
       <AppHeader />
 
       <Box as="main" p={4}>
