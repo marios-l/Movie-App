@@ -1,35 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Outlet } from "react-router-dom";
+import { Box, Flex, Link } from "@chakra-ui/react";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Box>
+      <Flex
+        as="header"
+        px={4}
+        py={3}
+        borderBottom="1px solid"
+        borderColor="gray.200"
+        align="center"
+      >
+        <Link
+          href="/"
+          fontWeight="semibold"
+          _hover={{ textDecoration: "none", color: "teal.500" }}
+        >          
+        </Link>
+      </Flex>
 
-export default App
+      <Box as="main" p={4}>
+        <Outlet />
+      </Box>
+    </Box>
+  );
+}
