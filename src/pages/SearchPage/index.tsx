@@ -16,7 +16,9 @@ import {
   Select,
   Portal,
   createListCollection,
+  InputGroup,
 } from "@chakra-ui/react";
+import { Search } from "lucide-react";
 
 const yearStrings = Array.from({ length: 60 }, (_, i) => String(2025 - i));
 const yearsCollection = createListCollection({
@@ -32,13 +34,7 @@ export default function SearchPage() {
     year: "",
   });
 
-  const {
-    data,
-    isError,
-    error,
-    isFetching,
-    isFetched,
-  } = useQuery({
+  const { data, isError, error, isFetching, isFetched } = useQuery({
     queryKey: ["search", submitted.q, submitted.year], // when either key changes -> refetch
     queryFn: () => searchMovies(submitted.q, 1, submitted.year),
     enabled: submitted.q.trim().length > 0, // only fetch on mount if input length > 0
@@ -57,15 +53,19 @@ export default function SearchPage() {
 
   return (
     <Container maxW="6xl" py={6}>
-      <Heading size="md" mb={4}>🎬 Movie Search</Heading>
+      <Heading size="md" mb={4}>
+        Search for movies
+      </Heading>
 
       <Box as="form" onSubmit={onSearch} mb={4}>
         <HStack gap={3} align="stretch">
-          <Input
-            placeholder="Search movies…"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-          />
+          <InputGroup flex="1" startElement={<Search size={16} />}>
+            <Input
+              placeholder="Search movies…"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+            />
+          </InputGroup>
 
           <Select.Root
             collection={yearsCollection}
@@ -74,7 +74,6 @@ export default function SearchPage() {
             width="140px"
           >
             <Select.HiddenSelect name="year" />
-            <Select.Label>Year</Select.Label>
 
             <Select.Control>
               <Select.Trigger>
@@ -112,14 +111,20 @@ export default function SearchPage() {
         </HStack>
       )}
 
-      {isError && <Text color="red.500">Error: {(error as Error).message}</Text>}
+      {isError && (
+        <Text color="red.500">Error: {(error as Error).message}</Text>
+      )}
 
       {!isFetching && isFetched && results.length === 0 && (
         <Text>No results. Try another search.</Text>
       )}
 
       {results.length > 0 && (
-        <Grid templateColumns="repeat(auto-fill, minmax(180px, 1fr))" gap={4} mt={2}>
+        <Grid
+          templateColumns="repeat(auto-fill, minmax(180px, 1fr))"
+          gap={4}
+          mt={8}
+        >
           {results.map((m) => (
             <GridItem key={m.id}>
               <MovieCard movie={m} />

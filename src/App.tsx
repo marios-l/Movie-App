@@ -1,24 +1,11 @@
 import { Outlet } from "react-router-dom";
-import { Box, Flex, Link } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import AppHeader from "./components/common/AppHeader";
 
 export default function App() {
   return (
-    <Box>
-      <Flex
-        as="header"
-        px={4}
-        py={3}
-        borderBottom="1px solid"
-        borderColor="gray.200"
-        align="center"
-      >
-        <Link
-          href="/"
-          fontWeight="semibold"
-          _hover={{ textDecoration: "none", color: "teal.500" }}
-        >          
-        </Link>
-      </Flex>
+    <Box margin="auto" maxW="1400px">
+      <AppHeader />
 
       <Box as="main" p={4}>
         <Outlet />

@@ -10,6 +10,7 @@ export default function MovieCard({ movie }: { movie: Movie }) {
   return (
     <Card.Root
       asChild
+      height="100%"
       _hover={{ transform: 'translateY(-2px)' }}
       transition="0.2s"
     >

@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { Button, Card, Field, Input, Stack, Text } from "@chakra-ui/react";
 
 // location.state is typed as unknown in router
 //getRedirectPath({ from: { pathname: "/home" } });
 // -> "/home"
 
-//getRedirectPath({}); 
+//getRedirectPath({});
 // -> null
 
-//getRedirectPath("random string"); 
+//getRedirectPath("random string");
 // -> null
 
 function getRedirectPath(state: unknown): string | null {
@@ -46,29 +47,33 @@ export default function Login() {
   }
 
   return (
-    <div style={{ padding: 16, maxWidth: 360 }}>
-      <h1>Login</h1>
-      <form onSubmit={onSubmit}>
-        <div style={{ marginBottom: 8 }}>
-          <label>Email</label>
-          <input
-            value={email}
-            onChange={(ev) => setEmail(ev.target.value)}
-            style={{ width: "100%" }}
-          />
-        </div>
-        <div style={{ marginBottom: 8 }}>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(ev) => setPassword(ev.target.value)}
-            style={{ width: "100%" }}
-          />
-        </div>
-        {err && <p style={{ color: "crimson" }}>{err}</p>}
-        <button>Sign in</button>
-      </form>
-    </div>
+    <Card.Root as="form" marginInline="auto" mt={12} maxW="sm" shadow="xl" onSubmit={onSubmit}>
+      <Card.Header>
+        <Card.Title>Login in</Card.Title>
+        <Card.Description>Login in to search for movies</Card.Description>
+      </Card.Header>
+      <Card.Body>
+        <Stack gap="4" w="full">
+          <Field.Root>
+            <Field.Label>Username</Field.Label>
+            <Input value={email} onChange={(ev) => setEmail(ev.target.value)} />
+          </Field.Root>
+          <Field.Root>
+            <Field.Label>Password</Field.Label>
+            <Input
+              type="password"
+              value={password}
+              onChange={(ev) => setPassword(ev.target.value)}
+            />
+          </Field.Root>
+        </Stack>
+        {err && <Text mt={2} color="firebrick">{err}</Text>}
+      </Card.Body>
+      <Card.Footer justifyContent="flex-end">
+        <Button type="submit" variant="solid">
+          Sign in
+        </Button>
+      </Card.Footer>
+    </Card.Root>
   );
 }
