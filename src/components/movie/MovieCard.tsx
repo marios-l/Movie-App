@@ -5,11 +5,13 @@ import {
   Heading,
   Text,
   Stack,
-  Button,
-  HStack,
+  IconButton,
+  Box,
 } from "@chakra-ui/react";
 import { imageUrl } from "../../api/tmdb";
 import type { Movie } from "../../types/tmdb";
+import { Heart } from "lucide-react";
+import { Tooltip } from "../ui/tooltip";
 
 type MovieCardProps = {
   movie: Movie;
@@ -27,22 +29,44 @@ export default function MovieCard({
 
   return (
     <Card.Root
-      height="100%"
-      //shadow="sm"
-      overflow="hidden"
       border="none"
       _hover={{ transform: "translateY(-2px)" }}
       transition="0.2s"
     >
       <RouterLink to={`/movie/${movie.id}`}>
         {poster ? (
-          <Image src={poster} alt={movie.title} loading="lazy" />
+          <Image
+            borderRadius="md"
+            src={poster}
+            alt={movie.title}
+            loading="lazy"
+          />
         ) : (
-          <div style={{ height: 300, background: "#eee" }} />
+          <Box height={300} borderRadius="md" backgroundColor="#eee"></Box>
         )}
       </RouterLink>
 
-      <Card.Body p={1.5}>
+      {onToggleFavorite && (
+        <Tooltip
+          content={isFavorite ? "Remove from favorites" : "Add to favorites"}
+          openDelay={50}
+          closeDelay={100}
+        >
+          <IconButton
+            position="absolute"
+            right={1}
+            top={1}
+            colorPalette={isFavorite ? "yellow" : "gray"}
+            rounded="full"
+            aria-label="favorite"
+            onClick={() => onToggleFavorite(movie)}
+          >
+            <Heart />
+          </IconButton>
+        </Tooltip>
+      )}
+
+      <Card.Body justifyContent="space-between" p={1.5}>
         <Stack gap="0">
           <Heading lineHeight={1} fontWeight={500} size="sm">
             {movie.title}
@@ -51,19 +75,6 @@ export default function MovieCard({
             {year}
           </Text>
         </Stack>
-
-        {onToggleFavorite && (
-          <HStack mt={2}>
-            <Button
-              size="sm"
-              variant={isFavorite ? "solid" : "outline"}
-              colorScheme={isFavorite ? "pink" : "gray"}
-              onClick={() => onToggleFavorite(movie)}
-            >
-              {isFavorite ? "Remove Favorite" : "Add Favorite"}
-            </Button>
-          </HStack>
-        )}
       </Card.Body>
     </Card.Root>
   );

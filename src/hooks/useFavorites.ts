@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Movie } from "../types/tmdb";
+import toast from "react-hot-toast";
 
 const LOCAL_STORAGE_KEY = "favorite_movies";
 
@@ -23,7 +24,10 @@ export function useFavorites() {
     }
   }, [favorites]);
 
-  const favoriteIds = useMemo(() => new Set(favorites.map((m) => m.id)), [favorites]);
+  const favoriteIds = useMemo(
+    () => new Set(favorites.map((m) => m.id)),
+    [favorites]
+  );
 
   const add = (m: Movie) => {
     if (!favoriteIds.has(m.id)) setFavorites([...favorites, m]);
@@ -34,10 +38,13 @@ export function useFavorites() {
   };
 
   const toggle = (m: Movie) => {
-    if (favoriteIds.has(m.id))
-        remove(m.id);
-    else
-        add(m);
+    if (favoriteIds.has(m.id)) {
+      remove(m.id);      
+      toast.success(`Removed ${m.title} from your favorites!`);
+    } else {
+      add(m);
+      toast.success(`Added ${m.title} to your favorites!`);
+    }
   };
 
   const isFavorite = (id: number) => favoriteIds.has(id);
