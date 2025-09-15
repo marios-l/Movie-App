@@ -6,7 +6,6 @@ import {
   Container,
   Heading,
   Image,
-  Link,
   Span,
   Spinner,
   Stack,
