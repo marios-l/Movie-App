@@ -20,9 +20,11 @@ import {
   createListCollection,
   InputGroup,
   Pagination,
+  Stack,
 } from "@chakra-ui/react";
-import { Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, Hand } from "lucide-react";
 import { useFavorites } from "../../hooks/useFavorites";
+import { useAuth } from "../../hooks/useAuth";
 
 const PAGE_SIZE = 20; // tmdb page size
 const MAX_TOTAL_PAGES = 500; // tmdb max pages
@@ -38,6 +40,7 @@ export default function SearchPage() {
   const [q, setQ] = useState("");
   const [year, setYear] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const { user } = useAuth();
 
   const [submitted, setSubmitted] = useState<{ q: string; year: string | "" }>({
     q: "",
@@ -75,12 +78,12 @@ export default function SearchPage() {
         const label = String(i + 1);
         return { label, value: label };
       }),
-    [totalPages]
+    [totalPages],
   );
 
   const pagesCollection = useMemo(
     () => createListCollection({ items: pageItems }),
-    [pageItems]
+    [pageItems],
   );
 
   const PageSelect = () => (
@@ -159,11 +162,15 @@ export default function SearchPage() {
   );
 
   return (
-    <Container maxW="6xl" py={2} px={0}>
-      <Heading size="md" mb={2}>
-        Search for movies
-      </Heading>
-
+    <Container maxW="6xl" mt={5}>
+      <Stack gap={3}>
+        <Heading size="4xl" fontFamily="sans-serif" color="fg.subtle">
+          <Hand /> Hello {user?.name}
+        </Heading>
+        <Text fontSize={20} color={"fg.subtle"}>
+          Search for movies
+        </Text>
+      </Stack>
       <Box as="form" onSubmit={onSearch} mb={4}>
         <HStack gap={1.5} align="stretch">
           <InputGroup
@@ -178,26 +185,26 @@ export default function SearchPage() {
             />
           </InputGroup>
 
-          <Button type="submit" colorScheme="blue" disabled={!q.trim()}>
-            Search
+          <Button
+            type="submit"
+            colorScheme="blue"
+            visibility={q.trim() ? "visible" : "hidden"}
+          >
+            <Search />
           </Button>
         </HStack>
       </Box>
-
       {isFetching && (
         <HStack>
           <Spinner /> <Text>Searching…</Text>
         </HStack>
       )}
-
       {isError && (
         <Text color="red.500">Error: {(error as Error).message}</Text>
       )}
-
       {!isFetching && isFetched && results.length === 0 && (
         <Text>No results. Try another search.</Text>
       )}
-
       {results.length > 0 && (
         <>
           <Grid
